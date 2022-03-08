@@ -1,16 +1,23 @@
 defmodule CurrencyConverterWeb.ErrorHelpers do
   @moduledoc """
-  Conveniences for translating and building error messages.
+    Conveniences for translating and building error messages.
   """
+  import Ecto.Changeset, only: [traverse_errors: 2]
+
+  alias Ecto.Changeset
 
   @doc """
-  Translates an error message.
+    Translates the errors of a changeset.
   """
-  def translate_error({msg, opts}) do
-    # Because the error messages we show in our forms and APIs
-    # are defined inside Ecto, we need to translate them dynamically.
-    Enum.reduce(opts, msg, fn {key, value}, acc ->
-      String.replace(acc, "%{#{key}}", fn _ -> to_string(value) end)
+  @spec translate_errors(Changeset.t()) :: map()
+  def translate_errors(%Changeset{} = changeset) do
+    traverse_errors(changeset, fn {msg, opts} ->
+      Enum.reduce(opts, msg, fn {key, value}, acc ->
+        String.replace(acc, "%{#{key}}", translate_value(value))
+      end)
     end)
   end
+
+  defp translate_value({:parameterized, Ecto.Enum, _map}), do: ""
+  defp translate_value(value), do: to_string(value)
 end

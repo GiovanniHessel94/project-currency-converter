@@ -1,6 +1,10 @@
 defmodule CurrencyConverterWeb.ErrorView do
   use CurrencyConverterWeb, :view
 
+  import CurrencyConverterWeb.ErrorHelpers
+
+  alias Ecto.Changeset
+
   # If you want to customize a particular status code
   # for a certain format, you may uncomment below.
   # def render("500.json", _assigns) do
@@ -13,4 +17,12 @@ defmodule CurrencyConverterWeb.ErrorView do
   def template_not_found(template, _assigns) do
     %{errors: %{detail: Phoenix.Controller.status_message_from_template(template)}}
   end
+
+  def render(
+        "error.json",
+        %{result: %Changeset{} = changeset}
+      ),
+      do: %{message: translate_errors(changeset)}
+
+  def render("error.json", %{result: result}), do: %{message: result}
 end
