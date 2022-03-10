@@ -1,6 +1,6 @@
 {
     "skip_files": [
-        "test/support",
-        "lib/currency_converter/contants"
+        "lib/currency_converter/constants/",
+        "test/support"
     ]
 }
