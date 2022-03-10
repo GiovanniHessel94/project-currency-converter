@@ -24,3 +24,6 @@ currency_converter-*.tar
 
 # Ignore the notes file
 notes.txt
+
+# Ignore the env file
+.env
