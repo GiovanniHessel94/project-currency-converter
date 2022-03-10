@@ -5,6 +5,8 @@ defmodule CurrencyConverter.Application do
 
   use Application
 
+  alias CurrencyConverter.ElasticSearchApi.ExternalService, as: ElasticSearchApiExternalService
+
   @impl true
   def start(_type, _args) do
     children = [
@@ -19,6 +21,8 @@ defmodule CurrencyConverter.Application do
       # Start a worker by calling: CurrencyConverter.Worker.start_link(arg)
       # {CurrencyConverter.Worker, arg}
     ]
+
+    ElasticSearchApiExternalService.start()
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
