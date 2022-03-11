@@ -59,12 +59,12 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequests.BodyBuilderTes
     end
 
     test """
-           when request has event, returns it on body as string
+           when request has event, returns it on body
          """,
          %{request: request} do
-      request = %Request{request | event: :atom_event}
+      expected_event = "event"
 
-      expected_event = "atom_event"
+      request = %Request{request | event: expected_event}
 
       assert %{"event" => ^expected_event} =
                request
@@ -289,12 +289,12 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequests.BodyBuilderTes
     end
 
     test """
-           when request has type, returns it on body as string
+           when request has type, returns it on body
          """,
          %{request: request} do
-      request = %Request{request | type: :atom_type}
+      expected_type = "type"
 
-      expected_type = "atom_type"
+      request = %Request{request | type: expected_type}
 
       assert %{"type" => ^expected_type} =
                request

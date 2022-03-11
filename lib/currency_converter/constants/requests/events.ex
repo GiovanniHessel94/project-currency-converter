@@ -3,8 +3,8 @@ defmodule CurrencyConverter.Constants.Requests.Events do
     Constants of all available request events.
   """
 
-  @convert_currency_event :convert_currency
-  @fetch_exchange_rates_event :fetch_exchange_rates
+  @convert_currency_event "convert_currency"
+  @fetch_exchange_rates_event "fetch_exchange_rates"
 
   @available_events [
     @convert_currency_event,

@@ -3,8 +3,8 @@ defmodule CurrencyConverter.Constants.Requests.Types do
     Constants of all available request types.
   """
 
-  @received_type :received_request
-  @external_type :external_request
+  @received_type "received_request"
+  @external_type "external_request"
 
   @available_types [
     @external_type,
