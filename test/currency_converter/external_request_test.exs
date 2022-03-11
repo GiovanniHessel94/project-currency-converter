@@ -22,8 +22,10 @@ defmodule CurrencyConverter.ExternalRequestTest do
     log_request: true,
     options: [timeout: 5000],
     query_params: %{base: "EUR", symbols: "BRL,JPY"},
-    request_headers: [Authorization: "Basic #{Base.encode64("username:password")}"]
+    request_headers: ["Custom-Header": "x-header"]
   }
+
+  @expected_headers [{"custom-header", "x-header"}]
 
   @fuse_name CurrencyConverter.ElasticSearchApi.ExternalService
 
@@ -65,6 +67,8 @@ defmodule CurrencyConverter.ExternalRequestTest do
       })
 
       Bypass.expect(bypass, "GET", "v1/latest", fn conn ->
+        assert TestUtils.headers_in_request_headers?(@expected_headers, conn) == true
+
         conn
         |> Conn.put_resp_header("content-type", "application/json")
         |> Conn.resp(200, response_body)
@@ -93,7 +97,7 @@ defmodule CurrencyConverter.ExternalRequestTest do
                  ],
                  request: %HTTPoison.Request{
                    body: "",
-                   headers: [Authorization: "Basic dXNlcm5hbWU6cGFzc3dvcmQ="],
+                   headers: ["Custom-Header": "x-header"],
                    method: "GET",
                    options: [timeout: 5000],
                    params: %{base: "EUR", symbols: "BRL,JPY"},
@@ -117,6 +121,8 @@ defmodule CurrencyConverter.ExternalRequestTest do
       request = %Request{@request | url: url}
 
       Bypass.expect(bypass, "GET", "v1/latest", fn conn ->
+        assert TestUtils.headers_in_request_headers?(@expected_headers, conn) == true
+
         conn
         |> Conn.put_resp_header("content-type", "application/json")
         |> Conn.put_resp_header("content-encoding", "gzip")
@@ -146,6 +152,8 @@ defmodule CurrencyConverter.ExternalRequestTest do
       request = %Request{@request | url: url}
 
       Bypass.expect(bypass, "GET", "v1/latest", fn conn ->
+        assert TestUtils.headers_in_request_headers?(@expected_headers, conn) == true
+
         conn
         |> Conn.put_resp_header("content-type", "application/json")
         |> Conn.put_resp_header("content-encoding", "x-gzip")
@@ -175,6 +183,8 @@ defmodule CurrencyConverter.ExternalRequestTest do
       request = %Request{@request | url: url}
 
       Bypass.expect(bypass, "GET", "v1/latest", fn conn ->
+        assert TestUtils.headers_in_request_headers?(@expected_headers, conn) == true
+
         conn
         |> Conn.put_resp_header("content-type", "application/json")
         |> Conn.resp(200, ~S(%{"success": true}))
@@ -199,6 +209,8 @@ defmodule CurrencyConverter.ExternalRequestTest do
       request = %Request{@request | url: url}
 
       Bypass.expect(bypass, "GET", "v1/latest", fn conn ->
+        assert TestUtils.headers_in_request_headers?(@expected_headers, conn) == true
+
         conn
         |> Conn.put_resp_header("content-type", "application/json")
         |> Conn.resp(500, ~S({"success": false}))
@@ -247,6 +259,8 @@ defmodule CurrencyConverter.ExternalRequestTest do
       request = %Request{@request | url: url, log_request: false}
 
       Bypass.expect(bypass, "GET", "v1/latest", fn conn ->
+        assert TestUtils.headers_in_request_headers?(@expected_headers, conn) == true
+
         conn
         |> Conn.put_resp_header("content-type", "application/json")
         |> Conn.resp(200, ~s({"success": true}))
@@ -284,6 +298,8 @@ defmodule CurrencyConverter.ExternalRequestTest do
       request = %Request{@request | url: url, log_request: true}
 
       Bypass.expect(bypass, "GET", "v1/latest", fn conn ->
+        assert TestUtils.headers_in_request_headers?(@expected_headers, conn) == true
+
         conn
         |> Conn.put_resp_header("content-type", "application/json")
         |> Conn.resp(200, ~s({"success": true}))

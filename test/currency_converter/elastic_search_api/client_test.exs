@@ -29,6 +29,12 @@ defmodule CurrencyConverter.ElasticSearchApi.ClientTest do
     ]
   }
 
+  @expected_headers [
+    {"authorization", "Basic Og=="},
+    {"content-type", "application/json"},
+    {"kbn-xsrf", "true"}
+  ]
+
   describe "log_request/1" do
     setup do
       bypass = Bypass.open()
@@ -54,6 +60,8 @@ defmodule CurrencyConverter.ElasticSearchApi.ClientTest do
         })
 
       Bypass.expect(bypass, "POST", "requests/_doc", fn conn ->
+        assert TestUtils.headers_in_request_headers?(@expected_headers, conn) == true
+
         conn
         |> Conn.put_resp_header("content-type", "application/json")
         |> Conn.resp(200, response_body)

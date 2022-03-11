@@ -29,6 +29,12 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequestTest do
     ]
   }
 
+  @expected_headers [
+    {"authorization", "Basic Og=="},
+    {"content-type", "application/json"},
+    {"kbn-xsrf", "true"}
+  ]
+
   describe "call/2" do
     setup do
       bypass = Bypass.open()
@@ -50,7 +56,7 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequestTest do
     end
 
     test "when the request has an invalid event, returns an error" do
-      request = %Request{@request | event: :event}
+      request = %Request{@request | event: "event"}
 
       response = LogRequest.call("", request)
 
@@ -63,7 +69,7 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequestTest do
     end
 
     test "when the request has an invalid type, returns an error" do
-      request = %Request{@request | type: :type}
+      request = %Request{@request | type: "type"}
 
       response = LogRequest.call("", request)
 
@@ -93,6 +99,8 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequestTest do
       })
 
       Bypass.expect(bypass, "POST", "requests/_doc", fn conn ->
+        assert TestUtils.headers_in_request_headers?(@expected_headers, conn) == true
+
         conn
         |> Conn.put_resp_header("content-type", "application/json")
         |> Conn.resp(200, response_body)
@@ -138,6 +146,8 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequestTest do
       })
 
       Bypass.expect(bypass, "POST", "requests/_doc", fn conn ->
+        assert TestUtils.headers_in_request_headers?(@expected_headers, conn) == true
+
         conn
         |> Conn.put_resp_header("content-type", "application/json")
         |> Conn.resp(400, response_body)

@@ -33,7 +33,6 @@ defmodule CurrencyConverter.ElasticSearchApi.ExternalService do
 
   @default_headers [
     Authorization: "Basic #{@credentials}",
-    "Content-Type": "application/json",
     "kbn-xsrf": true
   ]
 
