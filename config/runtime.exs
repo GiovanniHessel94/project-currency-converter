@@ -44,16 +44,17 @@ if config_env() == :prod do
   port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :currency_converter, CurrencyConverterWeb.Endpoint,
-    url: [host: host, port: 443],
-    http: [
-      # Enable IPv6 and bind on all interfaces.
-      # Set it to  {0, 0, 0, 0, 0, 0, 0, 1} for local network only access.
-      # See the documentation on https://hexdocs.pm/plug_cowboy/Plug.Cowboy.html
-      # for details about using IPv6 vs IPv4 and loopback vs public addresses.
-      ip: {0, 0, 0, 0, 0, 0, 0, 0},
-      port: port
-    ],
+    url: [host: System.get_env("APP_NAME") <> ".gigalixirapp.com", port: 443],
+    http: [port: {:system, "PORT"}],
     secret_key_base: secret_key_base
+
+  config :currency_converter,
+    elastic_search_api_enabled: System.get_env("ELASTIC_SEARCH_API_ENABLED"),
+    elastic_search_api_base_url: System.get_env("ELASTIC_SEARCH_API_BASE_URL"),
+    elastic_search_api_username: System.get_env("ELASTIC_SEARCH_API_USERNAME").
+    elastic_search_api_password: System.get_env("ELASTIC_SEARCH_API_PASSWORD"),
+    exchange_rates_api_base_url: System.get_env("EXCHANGE_RATES_API_BASE_URL"),
+    exchange_rates_api_access_key: System.get_env("EXCHANGE_RATES_API_ACCESS_KEY")
 
   # ## Using releases
   #
