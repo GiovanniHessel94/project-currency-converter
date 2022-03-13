@@ -25,3 +25,6 @@ config :logger, level: :warn
 
 # Initialize plugs at runtime for faster test compilation
 config :phoenix, :plug_init_mode, :runtime
+
+# Configures Exchange Rates API and Elastic Search API fuse strategy on tests.
+config :currency_converter, fuse_strategy: {:standard, 500, 1_000}

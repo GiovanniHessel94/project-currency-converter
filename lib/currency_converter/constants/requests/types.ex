@@ -1,5 +1,7 @@
 defmodule CurrencyConverter.Constants.Requests.Types do
   @moduledoc """
+    Requests types constants.
+
     Constants of all available request types.
   """
 
