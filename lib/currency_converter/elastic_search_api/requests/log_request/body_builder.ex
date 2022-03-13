@@ -1,4 +1,11 @@
 defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequests.BodyBuilder do
+  @moduledoc """
+    Log request body build module.
+
+    Responsible building the body that will be sent
+    on the log request operation.
+  """
+
   alias CurrencyConverter.Request
 
   def call(%Request{} = request),
@@ -23,7 +30,7 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequests.BodyBuilder do
          url: url
        }) do
     %{
-      created_at: Calendar.strftime(DateTime.utc_now(), "%Y-%m-%d %H:%M:%S.%f"),
+      processed_at: DateTime.utc_now() |> DateTime.to_iso8601(),
       event: event,
       method: String.downcase(method),
       options: encode_data(options),
@@ -58,5 +65,15 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequests.BodyBuilder do
   end
 
   defp format_url(url, query_params) when query_params in [nil, %{}], do: url
-  defp format_url(url, query_params), do: "#{url}?#{URI.encode_query(query_params)}"
+  defp format_url(url, query_params), do: "#{url}?#{format_query_params(query_params)}"
+
+  defp format_query_params(query_params) do
+    query_params
+    |> Map.to_list()
+    |> Enum.reduce("", fn {key, value}, acc ->
+      query_param = "#{key}=#{value}"
+
+      if acc == "", do: query_param, else: "#{acc}&#{query_param}"
+    end)
+  end
 end

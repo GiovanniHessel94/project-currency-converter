@@ -3,7 +3,7 @@ defmodule CurrencyConverter.ElasticSearchApi.ClientTest do
 
   alias Plug.Conn
 
-  alias CurrencyConverter.ElasticSearchApi.Requests.LogRequest
+  alias CurrencyConverter.ElasticSearchApi.Client
   alias CurrencyConverter.Constants.Requests.{Events, Types}
   alias CurrencyConverter.{Request, TestUtils}
 
@@ -42,8 +42,15 @@ defmodule CurrencyConverter.ElasticSearchApi.ClientTest do
       {:ok, bypass: bypass}
     end
 
-    test "when the request is successfully logged, returns the log info", %{bypass: bypass} do
+    test """
+          when the elastic search integration is enabled, log
+          the request successfully and returns the log info
+         """,
+         %{bypass: bypass} do
       url = TestUtils.endpoint_url(bypass.port)
+
+      System.put_env("ELASTIC_SEARCH_API_BASE_URL", url)
+      System.put_env("ELASTIC_SEARCH_API_ENABLED", "true")
 
       response_body = ~s({
           "_index": "requests",
@@ -59,7 +66,7 @@ defmodule CurrencyConverter.ElasticSearchApi.ClientTest do
           "_primary_term": 1
         })
 
-      Bypass.expect(bypass, "POST", "requests/_doc", fn conn ->
+      Bypass.expect(bypass, "POST", "requests-logs/_doc", fn conn ->
         assert TestUtils.headers_in_request_headers?(@expected_headers, conn) == true
 
         conn
@@ -67,7 +74,7 @@ defmodule CurrencyConverter.ElasticSearchApi.ClientTest do
         |> Conn.resp(200, response_body)
       end)
 
-      response = LogRequest.call(url, @request)
+      response = Client.log_request(@request)
 
       expected_response = {
         :ok,
@@ -81,6 +88,18 @@ defmodule CurrencyConverter.ElasticSearchApi.ClientTest do
           "result" => "created"
         }
       }
+
+      assert response == expected_response
+    end
+
+    test """
+      when the elastic search integration is disabled, returns an appropriated message
+    """ do
+      System.put_env("ELASTIC_SEARCH_API_ENABLED", "false")
+
+      response = Client.log_request(@request)
+
+      expected_response = {:ok, "elastic search disabled"}
 
       assert response == expected_response
     end

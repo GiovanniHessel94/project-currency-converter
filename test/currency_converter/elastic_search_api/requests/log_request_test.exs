@@ -49,7 +49,10 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequestTest do
 
       expected_response = {
         :error,
-        %Error{result: "Invalid request", status: :unprocessable_entity}
+        %Error{
+          result: "request has an invalid event or type, or log request is false",
+          status: :unprocessable_entity
+        }
       }
 
       assert response == expected_response
@@ -62,7 +65,10 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequestTest do
 
       expected_response = {
         :error,
-        %Error{result: "Invalid request", status: :unprocessable_entity}
+        %Error{
+          result: "request has an invalid event or type, or log request is false",
+          status: :unprocessable_entity
+        }
       }
 
       assert response == expected_response
@@ -75,7 +81,10 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequestTest do
 
       expected_response = {
         :error,
-        %Error{result: "Invalid request", status: :unprocessable_entity}
+        %Error{
+          result: "request has an invalid event or type, or log request is false",
+          status: :unprocessable_entity
+        }
       }
 
       assert response == expected_response
@@ -98,7 +107,7 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequestTest do
         "_primary_term": 1
       })
 
-      Bypass.expect(bypass, "POST", "requests/_doc", fn conn ->
+      Bypass.expect(bypass, "POST", "requests-logs/_doc", fn conn ->
         assert TestUtils.headers_in_request_headers?(@expected_headers, conn) == true
 
         conn
@@ -145,7 +154,7 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequestTest do
         "status": 400
       })
 
-      Bypass.expect(bypass, "POST", "requests/_doc", fn conn ->
+      Bypass.expect(bypass, "POST", "requests-logs/_doc", fn conn ->
         assert TestUtils.headers_in_request_headers?(@expected_headers, conn) == true
 
         conn

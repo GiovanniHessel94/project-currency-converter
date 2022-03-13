@@ -1,5 +1,14 @@
 defmodule CurrencyConverter.ElasticSearchApi.ResponseHandler do
+  @moduledoc """
+    Elastic search api response handler.
+
+    Responsible for handling the responses from the
+    elastic search api.
+  """
+
   alias CurrencyConverter.Error
+
+  @generic_error_message "an error occurred while communicating with the elastic search api"
 
   def call({:ok, %HTTPoison.Response{status_code: status_code}} = result)
       when status_code in 200..299,
@@ -24,6 +33,6 @@ defmodule CurrencyConverter.ElasticSearchApi.ResponseHandler do
   defp handle_error_response(_body),
     do: {
       :error,
-      Error.build(:unprocessable_entity, "an error occurred while calling the service")
+      Error.build(:unprocessable_entity, @generic_error_message)
     }
 end

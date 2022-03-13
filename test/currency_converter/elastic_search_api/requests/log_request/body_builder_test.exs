@@ -41,7 +41,7 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequests.BodyBuilderTes
 
       assert %{
                "event" => "event",
-               "created_at" => _created_at,
+               "processed_at" => _processed_at,
                "method" => "get",
                "options" => ~S({"timeout":5000}),
                "request_body" => "{}",
@@ -51,7 +51,7 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequests.BodyBuilderTes
                "response_time" => 1000,
                "status" => 200,
                "type" => "type",
-               "url" => "http://api.exchangeratesapi.io/v1/latest?base=EUR&symbols=BRL%2CJPY"
+               "url" => "http://api.exchangeratesapi.io/v1/latest?base=EUR&symbols=BRL,JPY"
              } =
                request
                |> BodyBuilder.call()

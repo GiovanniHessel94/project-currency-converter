@@ -1,14 +1,19 @@
 defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequest do
-  alias CurrencyConverter.ElasticSearchApi.{
-    ExternalService,
-    Requests.LogRequests.BodyBuilder
+  @moduledoc """
+    Log request operation module.
+
+    Responsible for handling the log request operation.
+  """
+
+  alias CurrencyConverter.{
+    Constants.Requests,
+    ElasticSearchApi,
+    Error,
+    Request
   }
 
-  alias CurrencyConverter.Constants.Requests.{Events, Types}
-  alias CurrencyConverter.{Error, Request}
-
-  @available_events Events.get_available_events()
-  @available_types Types.get_available_types()
+  alias ElasticSearchApi.{ExternalService, Requests.LogRequests.BodyBuilder}
+  alias Requests.{Events, Types}
 
   @external_type Types.get_external_type()
 
@@ -16,9 +21,13 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequest do
     log_request: false,
     method: "POST",
     request_headers: ["Content-Type": "application/json"],
-    type: @external_type,
-    url: ""
+    type: @external_type
   }
+
+  @available_events Events.get_available_events()
+  @available_types Types.get_available_types()
+
+  @invalid_request_message "request has an invalid event or type, or log request is false"
 
   def call(
         url,
@@ -32,7 +41,7 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequest do
       do:
         @request
         |> Map.put(:request_body, BodyBuilder.call(request_to_log))
-        |> Map.put(:url, "#{url}requests/_doc")
+        |> Map.put(:url, "#{url}requests-logs/_doc")
         |> ExternalService.request()
         |> handle_request()
 
@@ -40,7 +49,7 @@ defmodule CurrencyConverter.ElasticSearchApi.Requests.LogRequest do
         _url,
         _request_to_log
       ),
-      do: {:error, Error.build(:unprocessable_entity, "Invalid request")}
+      do: {:error, Error.build(:unprocessable_entity, @invalid_request_message)}
 
   defp handle_request({:ok, %HTTPoison.Response{body: body}}), do: {:ok, body}
   defp handle_request({:error, _reason} = result), do: result

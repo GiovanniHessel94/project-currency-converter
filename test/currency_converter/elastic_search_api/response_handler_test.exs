@@ -44,7 +44,7 @@ defmodule CurrencyConverter.ElasticSearchApi.ResponseHandlerTest do
         :error,
         %Error{
           status: :unprocessable_entity,
-          result: "an error occurred while calling the service"
+          result: "an error occurred while communicating with the elastic search api"
         }
       }
 
