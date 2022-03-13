@@ -41,17 +41,6 @@ defmodule CurrencyConverter.ExchangeRatesApi.ExternalService do
     rescue_only: []
   }
 
-  @retry_status_codes [
-    # TIMEOUT
-    408,
-    # RESOURCE_EXHAUSTED
-    429,
-    # CANCELLED
-    499,
-    # INTERNAL
-    500
-  ]
-
   @impl Behavior
   def start, do: ExternalService.start(__MODULE__, @fuse_options)
 
@@ -60,7 +49,7 @@ defmodule CurrencyConverter.ExchangeRatesApi.ExternalService do
     do:
       request
       |> put_default_query_param()
-      |> ExternalRequest.call(__MODULE__, @retry_opts, @retry_status_codes)
+      |> ExternalRequest.call(__MODULE__, @retry_opts)
       |> ResponseHandler.call()
 
   defp put_default_query_param(
