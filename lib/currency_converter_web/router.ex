@@ -7,6 +7,9 @@ defmodule CurrencyConverterWeb.Router do
 
   scope "/api", CurrencyConverterWeb do
     pipe_through :api
+
+    post "/conversions", ConversionController, :create
+    get "/conversions/:user_id", ConversionController, :index
   end
 
   # Enables LiveDashboard only for development
