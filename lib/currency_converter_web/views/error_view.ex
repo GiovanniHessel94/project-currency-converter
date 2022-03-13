@@ -22,7 +22,18 @@ defmodule CurrencyConverterWeb.ErrorView do
         "error.json",
         %{result: %Changeset{} = changeset}
       ),
-      do: %{message: translate_errors(changeset)}
+      do: %{
+        success: false,
+        reason: "invalid params",
+        errors: translate_errors(changeset)
+      }
 
-  def render("error.json", %{result: result}), do: %{message: result}
+  def render(
+        "error.json",
+        %{result: result}
+      ),
+      do: %{
+        success: false,
+        reason: result
+      }
 end

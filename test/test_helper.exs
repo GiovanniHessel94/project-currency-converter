@@ -9,5 +9,16 @@ Application.put_env(
   CurrencyConverter.ElasticSearchApi.ClientMock
 )
 
+Mox.defmock(
+  CurrencyConverter.ExchangeRatesApi.ClientMock,
+  for: CurrencyConverter.ExchangeRatesApi.Behavior
+)
+
+Application.put_env(
+  :currency_converter,
+  :exchange_rates_client,
+  CurrencyConverter.ExchangeRatesApi.ClientMock
+)
+
 ExUnit.start()
 Ecto.Adapters.SQL.Sandbox.mode(CurrencyConverter.Repo, :manual)
