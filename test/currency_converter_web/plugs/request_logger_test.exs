@@ -59,6 +59,40 @@ defmodule CurrencyConverterWeb.Plugs.RequestLoggerTest do
     end
 
     test """
+      when there is a call with an event in options and the conn was
+      processed by a view, formats the body, calls the
+      log request from elastic search client with the request
+      and returns the respons
+    """ do
+      expect(
+        ClientMock,
+        :log_request,
+        1,
+        fn %Request{
+             event: event,
+             method: method,
+             type: type
+           } ->
+          assert event == @request_event
+          assert method == "POST"
+          assert type == @request_type
+
+          {:ok, %{"success" => true}}
+        end
+      )
+
+      response =
+        "POST"
+        |> conn("/", %{"id" => 1})
+        |> RequestLogger.call(event: @request_event)
+        |> Conn.put_resp_header("content-type", "application/json")
+        |> then(&%Conn{&1 | private: Map.put(&1.private, :phoenix_format, "json")})
+        |> Conn.send_resp(200, Jason.encode_to_iodata!(%{"success" => true}))
+
+      assert %Plug.Conn{status: 200} = response
+    end
+
+    test """
       when there is a call but the options has no event, doesn't call
       the log request from elastic search client with the request
       and returns the response

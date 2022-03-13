@@ -1,10 +1,21 @@
 defmodule CurrencyConverterWeb.Plugs.RequestLogger do
+  @moduledoc """
+    Request logger plug.
+
+    Responsible for handling the logging of the received requests.
+  """
+
   import Plug.Conn
 
-  alias CurrencyConverter.Constants.Requests.{Events, Types}
-  alias CurrencyConverter.ElasticSearchApi.Client
-  alias CurrencyConverter.{Request, Utils}
+  alias CurrencyConverter.{
+    Constants.Requests,
+    ElasticSearchApi.Client,
+    Request,
+    Utils
+  }
+
   alias Plug.Conn
+  alias Requests.{Events, Types}
 
   @available_events Events.get_available_events()
   @request_type Types.get_received_type()
@@ -48,16 +59,19 @@ defmodule CurrencyConverterWeb.Plugs.RequestLogger do
          %Conn{
            status: status,
            resp_body: response_body,
-           resp_headers: response_headers
+           resp_headers: response_headers,
+           private: private
          } = conn,
          %Request{} = request,
          start_time
        ) do
+    phoenix_format = Map.get(private, :phoenix_format)
+
     request
     |> Map.put(:response_time, calculate_response_time(start_time))
     |> Map.put(:status, status)
-    |> Map.put(:response_body, response_body)
     |> Map.put(:response_headers, response_headers)
+    |> put_response_body(response_body, phoenix_format)
     |> log_request()
 
     conn
@@ -67,8 +81,16 @@ defmodule CurrencyConverterWeb.Plugs.RequestLogger do
     client = elastic_search_client()
 
     case client do
-      Client -> Task.start(fn -> client.log_request(request) end)
-      _ -> client.log_request(request)
+      Client ->
+        Task.Supervisor.start_child(
+          CurrencyConverter.Tasks.Supervisor,
+          fn ->
+            client.log_request(request)
+          end
+        )
+
+      _ ->
+        client.log_request(request)
     end
   end
 
@@ -77,6 +99,19 @@ defmodule CurrencyConverterWeb.Plugs.RequestLogger do
       (System.monotonic_time() - start_time)
       |> System.convert_time_unit(:native, :microsecond)
       |> Utils.format_microseconds()
+
+  defp put_response_body(request, io_response_body, "json" = _phoenix_format),
+    do:
+      io_response_body
+      |> Jason.decode!()
+      |> then(&Map.put(request, :response_body, &1))
+
+  defp put_response_body(
+         request,
+         response_body,
+         _phoenix_format
+       ),
+       do: Map.put(request, :response_body, response_body)
 
   defp elastic_search_client,
     do:
