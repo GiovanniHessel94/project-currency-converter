@@ -1,9 +1,17 @@
 defmodule CurrencyConverter.ExternalRequest do
+  @moduledoc """
+    External requests module.
+
+    Responsible for making all the external requests for third party apis.
+    It also handles fuse related returns, creates and send requests to be
+    logged and 'ungzip' and decode the response body when necessary.
+  """
+
   alias CurrencyConverter.ElasticSearchApi.Client
   alias CurrencyConverter.{Error, Request, Utils}
   alias ExternalService.RetryOptions
 
-  @retry_status_code [
+  @default_retry_status_codes [
     # TIMEOUT
     408,
     # RESOURCE_EXHAUSTED
@@ -23,10 +31,22 @@ defmodule CurrencyConverter.ExternalRequest do
     ExternalService.FuseBlownError
   ]
 
-  def call(%Request{} = request, fuse_name, %RetryOptions{} = retry_opts) do
-    ExternalService.call!(fuse_name, retry_opts, fn -> do_request(request) end)
+  @service_unavailable_message "service unavailable"
+
+  def call(
+        %Request{} = request,
+        fuse_name,
+        %RetryOptions{} = retry_opts,
+        retry_status_codes \\ @default_retry_status_codes
+      )
+      when is_list(retry_status_codes) do
+    ExternalService.call!(fuse_name, retry_opts, fn -> do_request(request, retry_status_codes) end)
   rescue
-    _e in @rescue_exceptions -> {:error, Error.build(:service_unavailable, "service unavailable")}
+    _e in @rescue_exceptions ->
+      {
+        :error,
+        Error.build(:service_unavailable, @service_unavailable_message)
+      }
   end
 
   defp do_request(
@@ -37,7 +57,8 @@ defmodule CurrencyConverter.ExternalRequest do
            request_body: request_body,
            request_headers: request_headers,
            url: url
-         } = request
+         } = request,
+         retry_status_codes
        ) do
     poison_request = %HTTPoison.Request{
       body: request_body,
@@ -51,7 +72,7 @@ defmodule CurrencyConverter.ExternalRequest do
     fn -> HTTPoison.request(poison_request) end
     |> :timer.tc()
     |> log_request(request)
-    |> handle_response()
+    |> handle_response(retry_status_codes)
   end
 
   defp log_request({_response_time, result}, %Request{log_request: false}), do: result
@@ -73,7 +94,7 @@ defmodule CurrencyConverter.ExternalRequest do
     request
     |> Map.put(:response_body, response_body)
     |> Map.put(:response_headers, response_headers)
-    |> Map.put(:response_time, response_time)
+    |> Map.put(:response_time, Utils.format_microseconds(response_time))
     |> Map.put(:status, status)
     |> do_log_request()
 
@@ -85,39 +106,53 @@ defmodule CurrencyConverter.ExternalRequest do
            response_time,
            {
              :error,
-             %HTTPoison.Error{reason: reason}
+             %HTTPoison.Error{} = error
            } = result
          },
          %Request{} = request
        ) do
     request
-    |> Map.put(:response_body, reason)
+    |> Map.put(:response_body, HTTPoison.Error.message(error))
     |> Map.put(:response_time, Utils.format_microseconds(response_time))
     |> do_log_request()
 
     result
   end
 
+  defp handle_response(
+         {:ok, %HTTPoison.Response{status_code: status_code}} = result,
+         retry_status_codes
+       ) do
+    case status_code in retry_status_codes do
+      true -> :retry
+      false -> transform_response_body(result)
+    end
+  end
+
+  defp handle_response({:error, %HTTPoison.Error{}}, _retry_status_codes), do: :retry
+
   defp do_log_request(%Request{} = request) do
     client = elastic_search_client()
 
     case client do
-      Client -> Task.start(fn -> client.log_request(request) end)
-      _ -> client.log_request(request)
+      Client ->
+        Task.Supervisor.start_child(
+          CurrencyConverter.Tasks.Supervisor,
+          fn ->
+            client.log_request(request)
+          end
+        )
+
+      _ ->
+        client.log_request(request)
     end
   end
 
-  defp handle_response({:ok, %HTTPoison.Response{status_code: status_code}})
-       when status_code in @retry_status_code,
-       do: :retry
-
-  defp handle_response({:ok, %HTTPoison.Response{}} = result),
+  defp transform_response_body({:ok, %HTTPoison.Response{}} = result),
     do:
       result
       |> ungzip_response_body()
       |> decode_response_body()
-
-  defp handle_response({:error, %HTTPoison.Error{}}), do: :retry
 
   defp ungzip_response_body(
          {
