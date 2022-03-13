@@ -26,4 +26,4 @@ currency_converter-*.tar
 notes.txt
 
 # Ignore the env file
-.env
+.env.*
