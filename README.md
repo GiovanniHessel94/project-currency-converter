@@ -1,5 +1,7 @@
 # CurrencyConverter
 
+[![codecov](https://codecov.io/gh/GiovanniHessel94/project-currency-converter/branch/main/graph/badge.svg?token=I7IZANZ00E)](https://codecov.io/gh/GiovanniHessel94/project-currency-converter)
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
