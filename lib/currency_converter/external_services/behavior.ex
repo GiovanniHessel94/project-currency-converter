@@ -1,4 +1,4 @@
-defmodule CurrencyConverter.ExternalRequests.Behavior do
+defmodule CurrencyConverter.ExternalServices.Behavior do
   alias CurrencyConverter.{Error, Request}
   alias HTTPoison.Error, as: PoisonError
   alias HTTPoison.Response
