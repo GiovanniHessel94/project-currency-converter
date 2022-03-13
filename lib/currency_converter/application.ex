@@ -6,6 +6,7 @@ defmodule CurrencyConverter.Application do
   use Application
 
   alias CurrencyConverter.ElasticSearchApi.ExternalService, as: ElasticSearchApiExternalService
+  alias CurrencyConverter.ExchangeRatesApi.ExternalService, as: ExchangeRatesApiExternalService
 
   @impl true
   def start(_type, _args) do
@@ -17,12 +18,15 @@ defmodule CurrencyConverter.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: CurrencyConverter.PubSub},
       # Start the Endpoint (http/https)
-      CurrencyConverterWeb.Endpoint
+      CurrencyConverterWeb.Endpoint,
       # Start a worker by calling: CurrencyConverter.Worker.start_link(arg)
       # {CurrencyConverter.Worker, arg}
+      # Start a task supervisor
+      {Task.Supervisor, name: CurrencyConverter.Tasks.Supervisor}
     ]
 
     ElasticSearchApiExternalService.start()
+    ExchangeRatesApiExternalService.start()
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
