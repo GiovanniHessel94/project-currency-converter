@@ -84,8 +84,7 @@ defmodule CurrencyConverterWeb.ConversionViewTest do
                source_amount: "10.00000",
                source_currency: "BRL",
                user_id: ^user_id
-             } =
-               response
+             } = response
     end
   end
 
