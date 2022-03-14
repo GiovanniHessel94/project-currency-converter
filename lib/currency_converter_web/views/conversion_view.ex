@@ -13,7 +13,9 @@ defmodule CurrencyConverterWeb.ConversionView do
       ),
       do: %{
         success: true,
-        data: render_many(conversions, __MODULE__, "conversion_with_calculation.json"),
+        data: %{
+          conversions: render_many(conversions, __MODULE__, "conversion_with_calculation.json")
+        },
         metadata: render_one(params, PaginationView, "pagination.json")
       }
 
@@ -33,15 +35,11 @@ defmodule CurrencyConverterWeb.ConversionView do
             } = conversion
         }
       ) do
-    conversion_view_data = render_one(conversion, __MODULE__, "conversion.json")
+    %{conversion: conversion_view_data} = render_one(conversion, __MODULE__, "conversion.json")
 
     case CurrencyConverter.calculate_destination_amount(exchange_rate, source_amount) do
       {:ok, destination_amount} ->
-        put_in(
-          conversion_view_data,
-          [:conversion, :destination_amount],
-          format_decimal(destination_amount)
-        )
+        Map.put(conversion_view_data, :destination_amount, format_decimal(destination_amount))
 
       _error ->
         conversion_view_data
