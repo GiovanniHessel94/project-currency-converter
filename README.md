@@ -48,7 +48,8 @@ A estrutura do projeto segue a [estrutura padrão de um projeto phoenix](https:/
 #### Informações Importantes
 É preciso salientar algumas informações importantes:
 * O id do usuário  deve ser um inteiro ou um UUID. Essa restrição foi feita pensando nas formas mais comuns de representar o id de um usuário.
-* A API suporta operações sobre valores com até 33 digitos na parte inteira e 5 digitos nas casas decimais. É altamente recomendado passar os valores como string, apesar de não obrigatório.
+* A API suporta operações sobre valores com até 33 digitos na parte inteira e 5 digitos nas casas decimais.
+* É altamente recomendado informar os valores no formato de string, sendo aceitados strings de inteiros e strings de floats. É possível informar valores como inteiros e floats, porém podem haver problemas na conversão desses números.
 * Números com mais de 5 casas decimais terão os valores após a 5ª casa decimal ignorados.
 * Os valores e taxas são sempre retornados no formato de string e com 5 casas decimais. 
 * A lista das moedas disponíveis está presente [neste arquivo de constantes](https://github.com/GiovanniHessel94/project-currency-converter/blob/main/lib/currency_converter/constants/currencies.ex)
