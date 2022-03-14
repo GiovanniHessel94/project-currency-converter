@@ -189,9 +189,9 @@ defmodule CurrencyConverterWeb.ConversionControllerTest do
       assert %{
                "success" => true,
                "metadata" => %{"limit" => 5, "order_direction" => "desc", "page" => 1},
-               "data" => [
-                 %{
-                   "conversion" => %{
+               "data" => %{
+                 "conversions" => [
+                   %{
                      "destination_amount" => ^expected_last_destination_amount,
                      "destination_currency" => "USD",
                      "exchange_rate" => ^expected_last_conversion_exchange_rate,
@@ -200,10 +200,8 @@ defmodule CurrencyConverterWeb.ConversionControllerTest do
                      "source_currency" => "BRL",
                      "user_id" => "88",
                      "id" => ^expected_last_conversion_id
-                   }
-                 },
-                 %{
-                   "conversion" => %{
+                   },
+                   %{
                      "destination_amount" => _destination_amount_3,
                      "destination_currency" => "USD",
                      "exchange_rate" => _exchange_rate_3,
@@ -212,10 +210,8 @@ defmodule CurrencyConverterWeb.ConversionControllerTest do
                      "source_currency" => "BRL",
                      "user_id" => "88",
                      "id" => _id_3
-                   }
-                 },
-                 %{
-                   "conversion" => %{
+                   },
+                   %{
                      "destination_amount" => _destination_amount_2,
                      "destination_currency" => "USD",
                      "exchange_rate" => _exchange_rate_2,
@@ -224,10 +220,8 @@ defmodule CurrencyConverterWeb.ConversionControllerTest do
                      "source_currency" => "BRL",
                      "user_id" => "88",
                      "id" => _id_2
-                   }
-                 },
-                 %{
-                   "conversion" => %{
+                   },
+                   %{
                      "destination_amount" => ^expected_first_destination_amount,
                      "destination_currency" => "USD",
                      "exchange_rate" => ^expected_first_conversion_exchange_rate,
@@ -237,8 +231,8 @@ defmodule CurrencyConverterWeb.ConversionControllerTest do
                      "user_id" => "88",
                      "id" => ^expected_first_conversion_id
                    }
-                 }
-               ]
+                 ]
+               }
              } = response
     end
 
@@ -268,7 +262,7 @@ defmodule CurrencyConverterWeb.ConversionControllerTest do
       expected_response = %{
         "success" => true,
         "metadata" => %{"limit" => 25, "order_direction" => "asc", "page" => 2},
-        "data" => []
+        "data" => %{"conversions" => []}
       }
 
       assert response == expected_response

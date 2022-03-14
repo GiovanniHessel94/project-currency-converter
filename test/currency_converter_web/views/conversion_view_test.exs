@@ -76,17 +76,16 @@ defmodule CurrencyConverterWeb.ConversionViewTest do
       expected_exchange_rate = Decimal.to_string(exchange_rate, :normal)
 
       assert %{
-               conversion: %{
-                 destination_amount: ^expected_destination_amount,
-                 destination_currency: "USD",
-                 exchange_rate: ^expected_exchange_rate,
-                 id: nil,
-                 processed_at: _processed_at,
-                 source_amount: "10.00000",
-                 source_currency: "BRL",
-                 user_id: ^user_id
-               }
-             } = response
+               destination_amount: ^expected_destination_amount,
+               destination_currency: "USD",
+               exchange_rate: ^expected_exchange_rate,
+               id: nil,
+               processed_at: _processed_at,
+               source_amount: "10.00000",
+               source_currency: "BRL",
+               user_id: ^user_id
+             } =
+               response
     end
   end
 
@@ -174,9 +173,9 @@ defmodule CurrencyConverterWeb.ConversionViewTest do
       assert %{
                success: true,
                metadata: %{limit: 5, order_direction: :asc, page: 1},
-               data: [
-                 %{
-                   conversion: %{
+               data: %{
+                 conversions: [
+                   %{
                      destination_amount: ^expected_destination_amount_1,
                      destination_currency: "USD",
                      exchange_rate: ^expected_exchange_rate_1,
@@ -185,10 +184,8 @@ defmodule CurrencyConverterWeb.ConversionViewTest do
                      source_amount: "10.00000",
                      source_currency: "BRL",
                      user_id: ^user_id
-                   }
-                 },
-                 %{
-                   conversion: %{
+                   },
+                   %{
                      destination_amount: ^expected_destination_amount_2,
                      destination_currency: "USD",
                      exchange_rate: ^expected_exchange_rate_2,
@@ -198,8 +195,8 @@ defmodule CurrencyConverterWeb.ConversionViewTest do
                      source_currency: "BRL",
                      user_id: ^user_id
                    }
-                 }
-               ]
+                 ]
+               }
              } = response
     end
   end
