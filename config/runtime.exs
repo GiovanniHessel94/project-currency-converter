@@ -45,14 +45,6 @@ if config_env() == :prod do
     http: [port: {:system, "PORT"}],
     secret_key_base: secret_key_base
 
-  config :currency_converter,
-    elastic_search_api_enabled: System.get_env("ELASTIC_SEARCH_API_ENABLED"),
-    elastic_search_api_base_url: System.get_env("ELASTIC_SEARCH_API_BASE_URL"),
-    elastic_search_api_username: System.get_env("ELASTIC_SEARCH_API_USERNAME"),
-    elastic_search_api_password: System.get_env("ELASTIC_SEARCH_API_PASSWORD"),
-    exchange_rates_api_base_url: System.get_env("EXCHANGE_RATES_API_BASE_URL"),
-    exchange_rates_api_access_key: System.get_env("EXCHANGE_RATES_API_ACCESS_KEY")
-
   # ## Using releases
   #
   # If you are doing OTP releases, you need to instruct Phoenix
