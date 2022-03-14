@@ -54,8 +54,8 @@ A estrutura do projeto segue a [estrutura padrão de um projeto phoenix](https:/
 * A lista das moedas disponíveis está presente [neste arquivo de constantes](https://github.com/GiovanniHessel94/project-currency-converter/blob/main/lib/currency_converter/constants/currencies.ex)
 
 #### Endpoint de Conversão
-**Método HTTP:** POST
-**Caminho:** api/conversions
+**Método HTTP:** POST  
+**Caminho:** api/conversions  
 **Corpo da Requisição:**
 ```
 {
@@ -84,8 +84,8 @@ A estrutura do projeto segue a [estrutura padrão de um projeto phoenix](https:/
 }
 ```
 #### Endpoint de Consulta de Conversões de um usuário
-**Método HTTP:** GET
-**Caminho:** api/conversions/<id do usuário>?page=1<demais parâmetros opcionais>
+**Método HTTP:** GET  
+**Caminho:** api/conversions/<id do usuário>?page=1<demais parâmetros opcionais>  
 **Parâmetros de paginação:**
 * **page:** Inteiro indicando a página que deve ser exibida, **obrigatório.**
 * **limit:** Inteiro indicando o limite de registros por página, possui valor padrão de 25.
