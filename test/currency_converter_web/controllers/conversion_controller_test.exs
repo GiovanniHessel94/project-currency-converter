@@ -4,8 +4,9 @@ defmodule CurrencyConverterWeb.ConversionControllerTest do
   import Mox
   import CurrencyConverter.TestUtils, only: [create_conversions_for_user_id: 1]
 
-  alias CurrencyConverter.ElasticSearchApi.ClientMock, as: ElasticSearchClientMock
-  alias CurrencyConverter.ExchangeRatesApi.ClientMock, as: ExchangeRatesClientMock
+  alias CurrencyConverter.ExternalServices
+  alias ExternalServices.ElasticSearchApi.ClientMock, as: ElasticSearchClientMock
+  alias ExternalServices.ExchangeRatesApi.ClientMock, as: ExchangeRatesClientMock
 
   alias CurrencyConverter.{Conversion, ExchangeRates}
 

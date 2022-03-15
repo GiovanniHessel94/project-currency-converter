@@ -1,6 +1,6 @@
 defmodule CurrencyConverter.Pagination do
   @moduledoc """
-    pagination module.
+    Pagination module.
 
     Schema that represents the conversion
     and apply it's validations.

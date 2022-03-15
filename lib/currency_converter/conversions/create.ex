@@ -131,6 +131,6 @@ defmodule CurrencyConverter.Conversions.Create do
       Application.get_env(
         :currency_converter,
         :exchange_rates_client,
-        CurrencyConverter.ExchangeRatesApi.Client
+        CurrencyConverter.ExternalServices.ExchangeRatesApi.Client
       )
 end

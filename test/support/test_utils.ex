@@ -1,7 +1,7 @@
 defmodule CurrencyConverter.TestUtils do
-  alias Plug.Conn
-
   import CurrencyConverter.Factory
+
+  alias Plug.Conn
 
   def endpoint_url(port), do: "http://localhost:#{port}/"
 

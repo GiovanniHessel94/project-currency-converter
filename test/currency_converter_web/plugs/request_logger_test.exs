@@ -5,7 +5,7 @@ defmodule CurrencyConverterWeb.Plugs.RequestLoggerTest do
   import Mox
 
   alias CurrencyConverter.Constants.Requests.{Events, Types}
-  alias CurrencyConverter.ElasticSearchApi.ClientMock
+  alias CurrencyConverter.ExternalServices.ElasticSearchApi.ClientMock
   alias CurrencyConverter.Request
   alias CurrencyConverterWeb.Plugs.RequestLogger
   alias Plug.Conn

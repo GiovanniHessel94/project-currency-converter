@@ -118,6 +118,6 @@ defmodule CurrencyConverterWeb.Plugs.RequestLogger do
       Application.get_env(
         :currency_converter,
         :elastic_search_client,
-        CurrencyConverter.ElasticSearchApi.Client
+        CurrencyConverter.ExternalServices.ElasticSearchApi.Client
       )
 end

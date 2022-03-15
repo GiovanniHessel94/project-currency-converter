@@ -3,13 +3,19 @@ defmodule CurrencyConverter.ExternalRequestTest do
 
   import Mox
 
-  alias Plug.Conn
+  alias CurrencyConverter.{
+    Constants,
+    Error,
+    ExternalRequest,
+    ExternalServices,
+    Request,
+    TestUtils
+  }
 
-  alias CurrencyConverter.ElasticSearchApi.ClientMock
-  alias CurrencyConverter.ElasticSearchApi.ExternalService, as: ElasticExternalService
-  alias CurrencyConverter.{Error, Request, TestUtils}
-  alias CurrencyConverter.ExternalRequest
-  alias CurrencyConverter.Constants.Requests.{Events, Types}
+  alias Constants.Requests.{Events, Types}
+  alias ExternalServices.ElasticSearchApi.ClientMock
+  alias ExternalServices.ElasticSearchApi.ExternalService, as: ElasticExternalService
+  alias Plug.Conn
 
   @request_event Events.get_fetch_exchange_rates_event()
   @request_type Types.get_external_type()
@@ -27,7 +33,7 @@ defmodule CurrencyConverter.ExternalRequestTest do
 
   @expected_headers [{"custom-header", "x-header"}]
 
-  @fuse_name CurrencyConverter.ElasticSearchApi.ExternalService
+  @fuse_name CurrencyConverter.ExternalServices.ElasticSearchApi.ExternalService
 
   @retry_opts %ExternalService.RetryOptions{
     backoff: {:exponential, 500},

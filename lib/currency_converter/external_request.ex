@@ -7,8 +7,8 @@ defmodule CurrencyConverter.ExternalRequest do
     logged and 'ungzip' and decode the response body when necessary.
   """
 
-  alias CurrencyConverter.ElasticSearchApi.Client
   alias CurrencyConverter.{Error, Request, Utils}
+  alias CurrencyConverter.ExternalServices.ElasticSearchApi.Client
   alias ExternalService.RetryOptions
 
   @default_retry_status_codes [
@@ -190,6 +190,6 @@ defmodule CurrencyConverter.ExternalRequest do
       Application.get_env(
         :currency_converter,
         :elastic_search_client,
-        CurrencyConverter.ElasticSearchApi.Client
+        CurrencyConverter.ExternalServices.ElasticSearchApi.Client
       )
 end

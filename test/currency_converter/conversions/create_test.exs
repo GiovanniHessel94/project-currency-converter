@@ -9,7 +9,7 @@ defmodule CurrencyConverter.Conversions.CreateTest do
     Conversions.Create,
     Error,
     ExchangeRates,
-    ExchangeRatesApi.ClientMock
+    ExternalServices.ExchangeRatesApi.ClientMock
   }
 
   alias Ecto.Changeset

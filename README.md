@@ -17,13 +17,13 @@ Um outro detalhe importante é que o valor convertido não deve ser armazenado n
 
 ### Tecnologias
 Foram utilizadas as seguintes tecnologias na implementação do desafio:
-* Para construção da API REST foi utilizado o framework [Phoenix](https://www.phoenixframework.org/) juntamente com [Ecto](https://hexdocs.pm/phoenix/ecto.html) visto que atualmente este é o "framework padrão" utilizado pela comunidade elixir e atende tranquilamente as demandas deste projeto.
+* Para construção da API REST foi utilizado o framework [Phoenix](https://www.phoenixframework.org/) juntamente com [Ecto](https://hexdocs.pm/phoenix/ecto.html), visto que atualmente este é o "framework padrão" utilizado pela comunidade elixir e atende tranquilamente as demandas deste projeto.
 * Para persistir as informações foi utilizado o banco [Postgres](https://www.postgresql.org/), também considerado um padrão no desenvolvimento de aplicações elixir. 
 * Para armazenar e disponibilizar para consulta os logs das requições recebidas e realizadas pela aplicação, foi utilizado o [Elastic Search Cloud](https://www.elastic.co/pt/cloud/), por ser uma referência no mercado e por eu já experimentado o [Kibana](https://www.elastic.co/pt/kibana/) para visualização dos logs.
-* Para realizar as requisições aos serviços exchangerates e elastic search foi utilizada a bibliotéca [HTTPoison](https://github.com/edgurgel/httpoison).
+* Para realizar as requisições aos serviços exchangerates e elastic search foi utilizada a biblioteca [HTTPoison](https://github.com/edgurgel/httpoison).
 * Para gerenciar e personalizar as "retentativas" (retry) das requisições efetuadas foi utilizada a biblioteca [ExternalService](https://github.com/jvoegele/external_service). 
-* Para efetuar os calculos de maneira precisa foi utilizada a bibliotéca [Decimal](https://github.com/ericmj/decimal).
-* Para efetuar os testes automatizados, foi importante a utilização das bibliotécas [Mox](https://github.com/dashbitco/mox) e [Bypass](https://github.com/PSPDFKit-labs/bypass).
+* Para efetuar os calculos de maneira precisa foi utilizada a biblioteca [Decimal](https://github.com/ericmj/decimal).
+* Para efetuar os testes automatizados, foi importante a utilização das bibliotecas [Mox](https://github.com/dashbitco/mox) e [Bypass](https://github.com/PSPDFKit-labs/bypass).
 * Para disponibilização da aplicação foi utilizada a plataforma [Gigalixir](https://www.gigalixir.com/) pela facilidade em realizar o deploy de uma aplicação e por eu já ter utilizado este serviço anteriormente.
 
 ### Estrutura do projeto
@@ -49,7 +49,7 @@ A estrutura do projeto segue a [estrutura padrão de um projeto phoenix](https:/
 É preciso salientar algumas informações importantes:
 * O id do usuário  deve ser um inteiro ou um UUID. Essa restrição foi feita pensando nas formas mais comuns de representar o id de um usuário.
 * A API suporta operações sobre valores com até 33 digitos na parte inteira e 5 digitos nas casas decimais.
-* É altamente recomendado informar os valores no formato de string, sendo aceitados strings de inteiros e strings de floats. É possível informar valores como inteiros e floats, porém podem haver problemas na conversão desses números.
+* É recomendado informar os valores no formato de string, em caso de floats, ou inteiros. É possível informar valores como floats, porém podem haver problemas na conversão desses números.
 * Números com mais de 5 casas decimais terão os valores após a 5ª casa decimal ignorados.
 * Os valores e taxas são sempre retornados no formato de string e com 5 casas decimais. 
 * A lista das moedas disponíveis está presente [neste arquivo de constantes](https://github.com/GiovanniHessel94/project-currency-converter/blob/main/lib/currency_converter/constants/currencies.ex)
@@ -90,9 +90,9 @@ A estrutura do projeto segue a [estrutura padrão de um projeto phoenix](https:/
 **Parâmetros de paginação:**
 * **page:** Inteiro indicando a página que deve ser exibida, **obrigatório.**
 * **limit:** Inteiro indicando o limite de registros por página, possui valor padrão de 25.
-* **order_direction:**: String indicando a direção da ordenação sobre a data hora do processamento, "ASC" indica ascendente e "DESC" indica descendente. Possui valor padrão "DESC".
+* **order_direction:** String indicando a direção da ordenação sobre a data hora do processamento, "ASC" indica ascendente e "DESC" indica descendente. Possui valor padrão "DESC".
 
-**Corpo da Requisição:** <vazio>
+**Corpo da Requisição:** <vazio>  
 **Corpo da Resposta:**
 ```
 {
@@ -149,7 +149,7 @@ Os logs das requisições integrados ao elastic search permitem a consulta de to
 
 ### Pré-requisitos
 
-Recomenda-se a instalação das mesmas versões utilizadas durante o desenvolvimento, ambas estão especificadas no arquivo ``.tool-versions``, sendo elass:
+Recomenda-se a instalação das mesmas versões utilizadas durante o desenvolvimento, ambas estão especificadas no arquivo ``.tool-versions``, sendo elas:
 * Versão `22.3.4.24` do erlang.
 * Versão `1.13.3` do elixir.
 
@@ -176,4 +176,4 @@ mix phx.server
 ## Autor
 
 Giovanni Hessel\
-[@Linkedin](https://www.linkedin.com/in/giovanni-garcia-hessel-137b1393/)
+[@Linkedin](https://www.linkedin.com/in/giovanni-hessel-137b1393/)

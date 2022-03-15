@@ -5,8 +5,9 @@ defmodule CurrencyConverter.Application do
 
   use Application
 
-  alias CurrencyConverter.ElasticSearchApi.ExternalService, as: ElasticSearchApiExternalService
-  alias CurrencyConverter.ExchangeRatesApi.ExternalService, as: ExchangeRatesApiExternalService
+  alias CurrencyConverter.ExternalServices
+  alias ExternalServices.ElasticSearchApi.ExternalService, as: ElasticSearchApiExternalService
+  alias ExternalServices.ExchangeRatesApi.ExternalService, as: ExchangeRatesApiExternalService
 
   @impl true
   def start(_type, _args) do

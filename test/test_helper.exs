@@ -1,23 +1,23 @@
 Mox.defmock(
-  CurrencyConverter.ElasticSearchApi.ClientMock,
-  for: CurrencyConverter.ElasticSearchApi.Behavior
+  CurrencyConverter.ExternalServices.ElasticSearchApi.ClientMock,
+  for: CurrencyConverter.ExternalServices.ElasticSearchApi.Behavior
 )
 
 Application.put_env(
   :currency_converter,
   :elastic_search_client,
-  CurrencyConverter.ElasticSearchApi.ClientMock
+  CurrencyConverter.ExternalServices.ElasticSearchApi.ClientMock
 )
 
 Mox.defmock(
-  CurrencyConverter.ExchangeRatesApi.ClientMock,
-  for: CurrencyConverter.ExchangeRatesApi.Behavior
+  CurrencyConverter.ExternalServices.ExchangeRatesApi.ClientMock,
+  for: CurrencyConverter.ExternalServices.ExchangeRatesApi.Behavior
 )
 
 Application.put_env(
   :currency_converter,
   :exchange_rates_client,
-  CurrencyConverter.ExchangeRatesApi.ClientMock
+  CurrencyConverter.ExternalServices.ExchangeRatesApi.ClientMock
 )
 
 ExUnit.start()
