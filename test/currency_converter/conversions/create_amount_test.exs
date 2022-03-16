@@ -45,8 +45,8 @@ defmodule CurrencyConverter.Conversions.CreateAmountTest do
       expected_response = {
         :error,
         %Error{
-          result: "can't create a decimal from the given amount",
-          status: :unprocessable_entity
+          result: "source_amount is not a valid number string representation",
+          status: :bad_request
         }
       }
 
@@ -64,8 +64,8 @@ defmodule CurrencyConverter.Conversions.CreateAmountTest do
       expected_response = {
         :error,
         %Error{
-          result: "can't create a decimal from the given amount",
-          status: :unprocessable_entity
+          result: "source_amount is not a valid number string representation",
+          status: :bad_request
         }
       }
 
@@ -118,33 +118,13 @@ defmodule CurrencyConverter.Conversions.CreateAmountTest do
       expected_response = {
         :error,
         %Error{
-          result: "this operations exceeds the decimal precision so results can't be trusted",
-          status: :unprocessable_entity
+          result:
+            "source_amount is not within the precision of 38 digits which 5 are for decimal places",
+          status: :bad_request
         }
       }
 
       response = CreateAmount.call(number)
-
-      assert response == expected_response
-    end
-  end
-
-  describe "get_results_cant_be_trusted_message/0" do
-    test "returns the results cant be trusted message" do
-      response = CreateAmount.get_results_cant_be_trusted_message()
-
-      expected_response =
-        "this operations exceeds the decimal precision so results can't be trusted"
-
-      assert response == expected_response
-    end
-  end
-
-  describe "get_cant_create_amount_message/0" do
-    test "returns the cant create decimal messagee" do
-      response = CreateAmount.get_cant_create_amount_message()
-
-      expected_response = "can't create a decimal from the given amount"
 
       assert response == expected_response
     end

@@ -3,7 +3,7 @@ defmodule CurrencyConverter.Conversions.CreateAmount do
     Create decimal amount module.
 
     Responsible for handling the creation of
-    decimals from received amount.
+    the decimal from received amount.
   """
 
   alias CurrencyConverter.{
@@ -12,15 +12,15 @@ defmodule CurrencyConverter.Conversions.CreateAmount do
     Utils
   }
 
-  @results_cant_be_trusted_message "this operations exceeds the decimal precision so results can't be trusted"
-  @cant_create_amount_message "can't create a decimal from the given amount"
+  @results_cant_be_trusted_message "source_amount is not within the precision of 38 digits which 5 are for decimal places"
+  @cant_create_amount_message "source_amount is not a valid number string representation"
 
   def call(number_string) when is_binary(number_string) do
     SetContextPrecision.call()
 
     case validate_is_number(number_string) do
       true -> do_create_amount(number_string)
-      false -> {:error, Error.build(:unprocessable_entity, @cant_create_amount_message)}
+      false -> {:error, Error.build(:bad_request, @cant_create_amount_message)}
     end
   end
 
@@ -29,9 +29,6 @@ defmodule CurrencyConverter.Conversions.CreateAmount do
       number
       |> Utils.value_to_string()
       |> call()
-
-  def get_results_cant_be_trusted_message, do: @results_cant_be_trusted_message
-  def get_cant_create_amount_message, do: @cant_create_amount_message
 
   defp validate_is_number(number_string) do
     case Integer.parse(number_string) do
@@ -74,7 +71,7 @@ defmodule CurrencyConverter.Conversions.CreateAmount do
 
   defp ensure_decimal_string_precision({integer_part, _decimal_fraction} = tuple) do
     if String.length(integer_part) > 33 do
-      {:error, Error.build(:unprocessable_entity, @results_cant_be_trusted_message)}
+      {:error, Error.build(:bad_request, @results_cant_be_trusted_message)}
     else
       tuple
     end
