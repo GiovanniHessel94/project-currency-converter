@@ -11,11 +11,10 @@ defmodule CurrencyConverter.Conversions.Convert do
     Conversion,
     Conversions.CalculateDestinationAmount,
     Conversions.CalculateExchangeRate,
+    Decimals.SetContextPrecision,
     Error,
     ExchangeRates
   }
-
-  alias CurrencyConverter.Decimals.Create, as: CreateDecimal
 
   @available_currencies Currencies.get_available_currencies()
 
@@ -111,9 +110,9 @@ defmodule CurrencyConverter.Conversions.Convert do
       )
     }
 
-  defp transform_currency_exchange_rate(
-         currency_exchange_rate,
-         _currency
-       ),
-       do: CreateDecimal.call(currency_exchange_rate)
+  defp transform_currency_exchange_rate(currency_exchange_rate, _currency) do
+    SetContextPrecision.call()
+
+    {:ok, Decimal.from_float(currency_exchange_rate)}
+  end
 end
