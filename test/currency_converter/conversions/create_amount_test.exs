@@ -1,7 +1,7 @@
-defmodule CurrencyConverter.Decimals.CreateAmountTest do
+defmodule CurrencyConverter.Conversions.CreateAmountTest do
   use ExUnit.Case, async: true
 
-  alias CurrencyConverter.{Decimals.CreateAmount, Error}
+  alias CurrencyConverter.{Conversions.CreateAmount, Error}
 
   describe "call/1" do
     test """
@@ -45,7 +45,7 @@ defmodule CurrencyConverter.Decimals.CreateAmountTest do
       expected_response = {
         :error,
         %Error{
-          result: "can't create a decimal with the given params",
+          result: "can't create a decimal from the given amount",
           status: :unprocessable_entity
         }
       }
@@ -64,7 +64,7 @@ defmodule CurrencyConverter.Decimals.CreateAmountTest do
       expected_response = {
         :error,
         %Error{
-          result: "can't create a decimal with the given params",
+          result: "can't create a decimal from the given amount",
           status: :unprocessable_entity
         }
       }
@@ -140,11 +140,11 @@ defmodule CurrencyConverter.Decimals.CreateAmountTest do
     end
   end
 
-  describe "get_cant_create_decimal_message/0" do
+  describe "get_cant_create_amount_message/0" do
     test "returns the cant create decimal messagee" do
-      response = CreateAmount.get_cant_create_decimal_message()
+      response = CreateAmount.get_cant_create_amount_message()
 
-      expected_response = "can't create a decimal with the given params"
+      expected_response = "can't create a decimal from the given amount"
 
       assert response == expected_response
     end

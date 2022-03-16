@@ -1,9 +1,9 @@
-defmodule CurrencyConverter.Decimals.CreateAmount do
+defmodule CurrencyConverter.Conversions.CreateAmount do
   @moduledoc """
-    Create decimals module.
+    Create decimal amount module.
 
     Responsible for handling the creation of
-    decimals from external sources.
+    decimals from received amount.
   """
 
   alias CurrencyConverter.{
@@ -13,14 +13,14 @@ defmodule CurrencyConverter.Decimals.CreateAmount do
   }
 
   @results_cant_be_trusted_message "this operations exceeds the decimal precision so results can't be trusted"
-  @cant_create_decimal_message "can't create a decimal with the given params"
+  @cant_create_amount_message "can't create a decimal from the given amount"
 
   def call(number_string) when is_binary(number_string) do
     SetContextPrecision.call()
 
     case validate_is_number(number_string) do
-      true -> do_create_decimal(number_string)
-      false -> {:error, Error.build(:unprocessable_entity, @cant_create_decimal_message)}
+      true -> do_create_amount(number_string)
+      false -> {:error, Error.build(:unprocessable_entity, @cant_create_amount_message)}
     end
   end
 
@@ -31,7 +31,7 @@ defmodule CurrencyConverter.Decimals.CreateAmount do
       |> call()
 
   def get_results_cant_be_trusted_message, do: @results_cant_be_trusted_message
-  def get_cant_create_decimal_message, do: @cant_create_decimal_message
+  def get_cant_create_amount_message, do: @cant_create_amount_message
 
   defp validate_is_number(number_string) do
     case Integer.parse(number_string) do
@@ -48,13 +48,13 @@ defmodule CurrencyConverter.Decimals.CreateAmount do
       |> String.replace_prefix(".", "")
       |> String.match?(~r/^\d+$/)
 
-  defp do_create_decimal(number_string),
+  defp do_create_amount(number_string),
     do:
       number_string
       |> removes_exceeding_decimal_places()
       |> ensure_decimal_string_precision()
       |> concat_integer_part_and_decimal_fraction()
-      |> creates_decimal_struct()
+      |> create_decimal()
 
   defp removes_exceeding_decimal_places(value),
     do:
@@ -96,7 +96,7 @@ defmodule CurrencyConverter.Decimals.CreateAmount do
 
   defp concat_integer_part_and_decimal_fraction({:error, _reason} = result), do: result
 
-  defp creates_decimal_struct(decimal_string) when is_binary(decimal_string) do
+  defp create_decimal(decimal_string) when is_binary(decimal_string) do
     decimal =
       decimal_string
       |> Decimal.new()
@@ -105,5 +105,5 @@ defmodule CurrencyConverter.Decimals.CreateAmount do
     {:ok, decimal}
   end
 
-  defp creates_decimal_struct({:error, _reason} = result), do: result
+  defp create_decimal({:error, _reason} = result), do: result
 end
