@@ -1,4 +1,4 @@
-defmodule CurrencyConverter.Decimals.Create do
+defmodule CurrencyConverter.Decimals.CreateAmount do
   @moduledoc """
     Create decimals module.
 
@@ -46,7 +46,6 @@ defmodule CurrencyConverter.Decimals.Create do
     do:
       decimal_fraction
       |> String.replace_prefix(".", "")
-      |> String.slice(0, 5)
       |> String.match?(~r/^\d+$/)
 
   defp do_create_decimal(number_string),

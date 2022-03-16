@@ -1,7 +1,7 @@
-defmodule CurrencyConverter.Decimals.CreateTest do
+defmodule CurrencyConverter.Decimals.CreateAmountTest do
   use ExUnit.Case, async: true
 
-  alias CurrencyConverter.{Decimals.Create, Error}
+  alias CurrencyConverter.{Decimals.CreateAmount, Error}
 
   describe "call/1" do
     test """
@@ -15,7 +15,7 @@ defmodule CurrencyConverter.Decimals.CreateTest do
         Decimal.new("30.00000")
       }
 
-      response = Create.call(number)
+      response = CreateAmount.call(number)
 
       assert response == expected_response
     end
@@ -31,7 +31,7 @@ defmodule CurrencyConverter.Decimals.CreateTest do
         Decimal.new("30.50000")
       }
 
-      response = Create.call(number)
+      response = CreateAmount.call(number)
 
       assert response == expected_response
     end
@@ -50,7 +50,7 @@ defmodule CurrencyConverter.Decimals.CreateTest do
         }
       }
 
-      response = Create.call(number)
+      response = CreateAmount.call(number)
 
       assert response == expected_response
     end
@@ -69,7 +69,7 @@ defmodule CurrencyConverter.Decimals.CreateTest do
         }
       }
 
-      response = Create.call(number)
+      response = CreateAmount.call(number)
 
       assert response == expected_response
     end
@@ -86,7 +86,7 @@ defmodule CurrencyConverter.Decimals.CreateTest do
         Decimal.new("25.12300")
       }
 
-      response = Create.call(number)
+      response = CreateAmount.call(number)
 
       assert response == expected_response
     end
@@ -104,7 +104,7 @@ defmodule CurrencyConverter.Decimals.CreateTest do
         Decimal.new("25.12345")
       }
 
-      response = Create.call(number)
+      response = CreateAmount.call(number)
 
       assert response == expected_response
     end
@@ -123,7 +123,7 @@ defmodule CurrencyConverter.Decimals.CreateTest do
         }
       }
 
-      response = Create.call(number)
+      response = CreateAmount.call(number)
 
       assert response == expected_response
     end
@@ -131,7 +131,7 @@ defmodule CurrencyConverter.Decimals.CreateTest do
 
   describe "get_results_cant_be_trusted_message/0" do
     test "returns the results cant be trusted message" do
-      response = Create.get_results_cant_be_trusted_message()
+      response = CreateAmount.get_results_cant_be_trusted_message()
 
       expected_response =
         "this operations exceeds the decimal precision so results can't be trusted"
@@ -142,7 +142,7 @@ defmodule CurrencyConverter.Decimals.CreateTest do
 
   describe "get_cant_create_decimal_message/0" do
     test "returns the cant create decimal messagee" do
-      response = Create.get_cant_create_decimal_message()
+      response = CreateAmount.get_cant_create_decimal_message()
 
       expected_response = "can't create a decimal with the given params"
 
