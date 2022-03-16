@@ -36,8 +36,11 @@ defmodule CurrencyConverter.Conversions.CalculateDestinationAmount do
       |> Decimal.to_string(:normal)
       |> String.split(".")
       |> Enum.at(1)
-      |> String.length()
+      |> string_length()
       |> validate_decimal_places_length(destination_amount)
+
+  defp string_length(nil), do: 0
+  defp string_length(decimal_fraction), do: String.length(decimal_fraction)
 
   defp validate_decimal_places_length(
          length,

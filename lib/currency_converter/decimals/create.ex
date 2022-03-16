@@ -45,6 +45,7 @@ defmodule CurrencyConverter.Decimals.Create do
   defp validate_decimal_fraction(decimal_fraction),
     do:
       decimal_fraction
+      |> String.slice(0, 5)
       |> String.replace_prefix(".", "")
       |> String.match?(~r/^\d+$/)
 
