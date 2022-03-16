@@ -59,7 +59,7 @@ defmodule CurrencyConverter.Decimals.CreateTest do
       when the given number decimal fraction is not a valid string represantation,
       returns an error
     """ do
-      number = "30.5555.9"
+      number = "30.555.59"
 
       expected_response = {
         :error,
