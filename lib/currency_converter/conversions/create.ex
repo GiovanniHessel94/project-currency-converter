@@ -16,7 +16,7 @@ defmodule CurrencyConverter.Conversions.Create do
     Utils
   }
 
-  alias CurrencyConverter.Decimals.Create, as: CreateDecimal
+  alias CurrencyConverter.Decimals.CreateAmount
   alias Ecto.Changeset
 
   @operation_defined_keys [
@@ -28,8 +28,8 @@ defmodule CurrencyConverter.Conversions.Create do
   @cant_transform_source_amount_message "source_amount is not a valid number string representation"
   @source_amount_out_of_precision_range_message "source_amount is not within the precision of 38 digits which 5 are for decimal places"
 
-  @create_decimal_cant_create_decimal_message CreateDecimal.get_cant_create_decimal_message()
-  @create_results_cant_be_trusted_message CreateDecimal.get_results_cant_be_trusted_message()
+  @create_decimal_cant_create_decimal_message CreateAmount.get_cant_create_decimal_message()
+  @create_results_cant_be_trusted_message CreateAmount.get_results_cant_be_trusted_message()
 
   def call(params) do
     with %Changeset{
@@ -74,7 +74,7 @@ defmodule CurrencyConverter.Conversions.Create do
            "source_amount" => source_amount
          } = params
        ) do
-    case CreateDecimal.call(source_amount) do
+    case CreateAmount.call(source_amount) do
       {:ok, %Decimal{} = source_amount} ->
         Map.put(params, "source_amount", source_amount)
 

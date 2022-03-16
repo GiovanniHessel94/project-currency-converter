@@ -64,8 +64,8 @@ defmodule CurrencyConverter.Conversions.CreateTest do
 
       response = Create.call(base_params)
 
-      expected_destination_amount = Decimal.new("51.10901")
-      expected_exchange_rate = Decimal.new("5.0602980967667966062829626232515478101")
+      expected_destination_amount = Decimal.new("51.10902")
+      expected_exchange_rate = Decimal.new("5.0602989586801571381269083908200955560")
       expected_source_amount = Decimal.new("10.10000")
 
       assert {

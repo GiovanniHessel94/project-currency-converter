@@ -40,7 +40,7 @@ defmodule CurrencyConverter.Conversions.ConvertTest do
       response = Convert.call(base_exchange_struct, base_conversion)
 
       expected_destination_amount = Decimal.new("1.97617")
-      expected_exchange_rate = Decimal.new("0.19761681641619796301969008462948093072")
+      expected_exchange_rate = Decimal.new("0.19761678275641309147224322801756608125")
 
       assert {
                :ok,
