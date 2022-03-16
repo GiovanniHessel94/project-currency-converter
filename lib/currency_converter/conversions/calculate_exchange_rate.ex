@@ -17,10 +17,7 @@ defmodule CurrencyConverter.Conversions.CalculateExchangeRate do
       ) do
     SetContextPrecision.call()
 
-    exchange_rate =
-      destination_base_exchange_rate
-      |> Decimal.div(source_base_exchange_rate)
-      |> Decimal.round(5)
+    exchange_rate = Decimal.div(destination_base_exchange_rate, source_base_exchange_rate)
 
     {:ok, exchange_rate}
   end

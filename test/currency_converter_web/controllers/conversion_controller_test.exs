@@ -57,9 +57,9 @@ defmodule CurrencyConverterWeb.ConversionControllerTest do
       assert %{
                "data" => %{
                  "conversion" => %{
-                   "destination_amount" => "1.97620",
+                   "destination_amount" => "1.97617",
                    "destination_currency" => "USD",
-                   "exchange_rate" => "0.19762",
+                   "exchange_rate" => "0.19761681641619796301969008462948093072",
                    "processed_at" => _processed_at,
                    "source_amount" => "10.00000",
                    "source_currency" => "BRL",

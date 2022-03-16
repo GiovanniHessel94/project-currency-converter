@@ -39,8 +39,8 @@ defmodule CurrencyConverter.Conversions.ConvertTest do
          } do
       response = Convert.call(base_exchange_struct, base_conversion)
 
-      expected_destination_amount = Decimal.new("1.97620")
-      expected_exchange_rate = Decimal.new("0.19762")
+      expected_destination_amount = Decimal.new("1.97617")
+      expected_exchange_rate = Decimal.new("0.19761681641619796301969008462948093072")
 
       assert {
                :ok,
@@ -73,7 +73,7 @@ defmodule CurrencyConverter.Conversions.ConvertTest do
       response = Convert.call(exchange_struct, conversion)
 
       expected_destination_amount = Decimal.new("200200200200200200200200200200200.24690")
-      expected_exchange_rate = Decimal.new("2.00000")
+      expected_exchange_rate = Decimal.new("2")
 
       assert {
                :ok,

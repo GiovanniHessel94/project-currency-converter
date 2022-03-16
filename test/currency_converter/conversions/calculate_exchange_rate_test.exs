@@ -17,7 +17,7 @@ defmodule CurrencyConverter.Conversions.CalculateExchangeRateTest do
           destination_base_exchange_rate
         )
 
-      expected_response = {:ok, Decimal.new("0.19762")}
+      expected_response = {:ok, Decimal.new("0.19761678275641309147224322801756608125")}
 
       assert response == expected_response
     end

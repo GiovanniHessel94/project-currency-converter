@@ -51,7 +51,8 @@ A estrutura do projeto segue a [estrutura padrão de um projeto phoenix](https:/
 * A API suporta operações sobre valores com até 33 digitos na parte inteira e 5 digitos nas casas decimais.
 * É recomendado informar os valores no formato de string, em caso de floats, ou inteiros. É possível informar valores como floats, porém podem haver problemas na conversão desses números.
 * Números com mais de 5 casas decimais terão os valores após a 5ª casa decimal ignorados.
-* Os valores e taxas são sempre retornados no formato de string e com 5 casas decimais. 
+* Os valores são sempre retornados no formato de string e com 5 casas decimais.
+* As taxas de conversão são retornadas no formato de string.
 * A lista das moedas disponíveis está presente [neste arquivo de constantes](https://github.com/GiovanniHessel94/project-currency-converter/blob/main/lib/currency_converter/constants/currencies.ex)
 
 #### Endpoint de Conversão

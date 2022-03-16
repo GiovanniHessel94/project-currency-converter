@@ -69,7 +69,7 @@ defmodule CurrencyConverterWeb.ConversionView do
           source_amount: format_decimal(source_amount),
           destination_currency: destination_currency,
           destination_amount: format_decimal(destination_amount),
-          exchange_rate: format_decimal(exchange_rate),
+          exchange_rate: Decimal.to_string(exchange_rate, :normal),
           processed_at: processed_at
         }
       }

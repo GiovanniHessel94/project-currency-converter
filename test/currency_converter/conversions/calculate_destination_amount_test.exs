@@ -36,7 +36,7 @@ defmodule CurrencyConverter.Conversions.CalculateDestinationAmountTest do
       when operations exceeds 38 digits of precision, returns
       are error indicating that the result can't be trusted
     """ do
-      exchange_rate = Decimal.new("1.00001")
+      exchange_rate = Decimal.new("411201812117700.6304728546410")
       source_amount = Decimal.new("999999999999999999999999999999999.99999")
 
       response = CalculateDestinationAmount.call(exchange_rate, source_amount)
